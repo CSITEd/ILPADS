@@ -1,0 +1,32 @@
+body {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        width: 100%;
+
+    }
+    .container {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    #canvas {
+        display: block;
+        padding: 0;
+        margin: 0 auto;
+/*        width: 500px;
+        height: 400px;*/
+        background-color: rgb(240,240,240);
+    }
+
+   /* @media(max-width:500px) {
+        .container {
+            margin: 0 50px;
+        }
+        #canvas {
+            width: 60%;
+            height: auto;
+            background-color:red;
+        }
+    }*/
