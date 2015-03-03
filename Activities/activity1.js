@@ -27,6 +27,24 @@ $('canvas').drawLine({
   x2: 430, y2: 240,
   layer:true,
   coord:true
+})
+.drawLine({
+  name: "enterbox1",
+  strokeStyle: '#000',
+  strokeWidth: 4,
+  x1: 225, y1: 110,
+  x2: 210, y2: 90,
+  layer:true,
+  coord:true
+})
+.drawLine({
+  name:"enterbox2",
+  strokeStyle: '#222',
+  strokeWidth: 4,
+  x1: 275, y1: 110,
+  x2: 290, y2: 90,
+  layer:true,
+  coord:true
 });
 for (var i = 0; i < 15; i++) { // Conveyor Belt part 1
   $('canvas').drawEllipse({
@@ -45,6 +63,7 @@ for (var i = 0; i < 15; i++) { // Conveyor Belt part 2
   });
 };
 $('canvas').drawRect({ // Main Box
+name:"main box",
 strokeStyle: '#000',
 fillStyle: '#eee',
 shadowColor: '#333',
@@ -109,14 +128,21 @@ fontFamily: 'Verdana, sans-serif',
 text: '+',
 layer: true
 })
-.drawRect({ // Evaluating Box
-name: "drop",
+.drawRect({ // equality output box
 strokeStyle: '#000',
 fillStyle: '#ccc',
 x: 250, y: 160,
 width: 50,
 height: 80,
 cornerRadius: 5,
+layer: true,
+})
+.drawRect({ // Evaluating Box
+name: "evaluation",
+//strokeStyle: '#000', // if visualisation needed, for test purpose
+x: 250, y: 75,
+width: 60,
+height: 70,
 layer: true,
 });
 for (var i = 0; i < 7; i++) {
@@ -226,7 +252,7 @@ $('canvas').animateLayer('reload', {
     rotate: '+=180'
 });
 // #============================================= TARGET =============================================# //
-if(false){
+if(true){
   $('canvas').drawImage({ // used to test
   name:"target",
   weight:0,
@@ -374,7 +400,7 @@ function select(bottle, slot){
 // === ================== === //
 function evaluate(bottle){
   //$('canvas').moveLayer(bottle, 0).drawLayers();
-  translate(bottle,getX('drop'),getY('drop'));
+  translate(bottle,getX('evaluation'),getY('evaluation'));
   testBottle(bottle); 
 }
 function testBottle(layer){
@@ -388,12 +414,8 @@ translate(layer,156*ratio,160*ratio);
 //$('canvas').moveLayer(layer, 1);
 direction = -1;
 }else{
-  if(sortList[getWeight(layer)-1]==-1){
-    select(layer,"sort"+(getWeight(layer)-1));
-  } else {
-    translate(layer,250*ratio,70*ratio);
-  }
-direction = 0;
+  translate(layer,250*ratio,160*ratio);
+  direction = 0;
 }
 roll(direction);
 }
@@ -422,7 +444,7 @@ function drawBottle($name,$weight,$x,$y){
   },
   dragstop: function(layer) {
     fixPosition(layer,layer.x,layer.y)
-    if(on($name,"drop")){     // EVALUATE
+    if(on($name,"evaluation")){     // EVALUATE
       testBottle(layer);
     } else if(s=onSort(layer)){ // SORTED
       select(layer,s);
@@ -435,7 +457,9 @@ function drawBottle($name,$weight,$x,$y){
   },
   drag: function(layer) {
     // console.log(layer);
-    if(s=onSort(layer)){
+    if(on($name,"evaluation")){     // EVALUATE
+      $(this).animateLayer("main box", {shadowColor: '#ff0', shadowBlur: 20},0,function(layer) {layer.shadowColor= '#333'});
+    }else if(s=onSort(layer)){
       $(this).animateLayer(s, {shadowColor: '#ff0', shadowBlur: 20},0,function(layer) {layer.shadowColor= '#333'});
     }
   }
