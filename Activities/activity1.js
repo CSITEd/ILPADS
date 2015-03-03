@@ -431,7 +431,13 @@ function drawBottle($name,$weight,$x,$y){
     }
   },
   dragcancel: function(layer) {
-      translate(layer,$x,$y); 
+    translate(layer,$x,$y); 
+  },
+  drag: function(layer) {
+    // console.log(layer);
+    if(s=onSort(layer)){
+      $(this).animateLayer(s, {shadowColor: '#ff0', shadowBlur: 20},0,function(layer) {layer.shadowColor= '#333'});
+    }
   }
 });
 return $('canvas').getLayer($name);
