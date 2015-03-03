@@ -166,7 +166,7 @@ setValue(value);
   bottleList= [];
   if($level==1){
     b = [1,2,3,4,5,6,7];
-    console.log(shuffle(b));
+    shuffle(b);
     bottleList.push(drawBottle("bottle1",b[0],20,40));  
     bottleList.push(drawBottle("bottle2",b[1],60,70));
     bottleList.push(drawBottle("bottle3",b[2],100,40));
@@ -183,6 +183,9 @@ setValue(value);
     bottleList.push(drawBottle("bottle6",randomWeight(),440,70));
     bottleList.push(drawBottle("bottle7",randomWeight(),480,40)); 
   }
+  // Logging answer
+  console.log("Bottle values :");
+  bottleList.forEach(function(bottle){console.log(bottle.name+" : "+bottle.weight)});
 // #============================================= Select level =============================================# //
 $('canvas').drawText({
   name: "level1",
@@ -252,7 +255,7 @@ $('canvas').animateLayer('reload', {
     rotate: '+=180'
 });
 // #============================================= TARGET =============================================# //
-if(true){
+if(false){
   $('canvas').drawImage({ // used to test
   name:"target",
   weight:0,
@@ -345,11 +348,11 @@ function Pvalue(){
   }
 }
 
-function translate(target, xb, yb){
+function translate(target, xb, yb, callback){
   fixPosition(target.name,xb,yb);
   $('canvas').animateLayer(target, {
   x: xb, y: yb
-  }, 300);
+  }, 300, callback);
 }
 
 function on(object,target){
@@ -405,19 +408,20 @@ function evaluate(bottle){
 }
 function testBottle(layer){
 unsortBottle(layer);
-if(getWeight(layer)>value){
-translate(layer,344*ratio,160*ratio);
-//$('canvas').moveLayer(layer, 1);
-direction = 1;
-}else if(getWeight(layer)<value){
-translate(layer,156*ratio,160*ratio);
-//$('canvas').moveLayer(layer, 1);
-direction = -1;
-}else{
-  translate(layer,250*ratio,160*ratio);
-  direction = 0;
-}
-roll(direction);
+$('canvas').moveLayer(layer, 1);
+translate(layer,250*ratio,160*ratio,function(){
+  if(getWeight(layer)>value){
+  translate(layer,344*ratio,160*ratio);
+  direction = 1;
+  }else if(getWeight(layer)<value){
+  translate(layer,156*ratio,160*ratio);
+  direction = -1;
+  }else{
+    $('canvas').moveLayer(layer, 50);
+    direction = 0;
+  }
+  roll(direction);
+});
 }
 
 function unsortBottle(layer){
