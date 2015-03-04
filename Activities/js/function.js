@@ -69,3 +69,7 @@ $('canvas').drawLayers();
 function fixPosition(layer,x,y){
   $('canvas').setLayer(layer, { ox : x/ratio, oy : y/ratio });
 }
+
+function bringToFront(layer){
+  $('canvas').moveLayer(layer,$('canvas').getLayers().length).drawLayers;
+}

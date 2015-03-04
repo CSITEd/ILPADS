@@ -11,7 +11,7 @@ sortList = [-1,-1,-1,-1,-1,-1,-1];
 value = initValue;
 
 $('canvas').drawLine({
-  name:"l1",
+  name:"stakeLeft",
   strokeStyle: '#222',
   strokeWidth: 8,
   x1: 70, y1: 200,
@@ -20,11 +20,29 @@ $('canvas').drawLine({
   coord:true
 })
 .drawLine({
-  name:"l2",
+  name:"stakeRight",
   strokeStyle: '#222',
   strokeWidth: 8,
   x1: 430, y1: 200,
   x2: 430, y2: 240,
+  layer:true,
+  coord:true
+})
+.drawLine({
+  name: "funnelLeft",
+  strokeStyle: '#000',
+  strokeWidth: 4,
+  x1: 225, y1: 112,
+  x2: 210, y2: 90,
+  layer:true,
+  coord:true
+})
+.drawLine({
+  name:"funnelRight",
+  strokeStyle: '#222',
+  strokeWidth: 4,
+  x1: 275, y1: 112,
+  x2: 290, y2: 90,
   layer:true,
   coord:true
 });
@@ -45,6 +63,7 @@ for (var i = 0; i < 15; i++) { // Conveyor Belt part 2
   });
 };
 $('canvas').drawRect({ // Main Box
+name:"main box",
 strokeStyle: '#000',
 fillStyle: '#eee',
 shadowColor: '#333',
@@ -109,8 +128,8 @@ fontFamily: 'Verdana, sans-serif',
 text: '+',
 layer: true
 })
-.drawRect({ // Evaluating Box
-name: "drop",
+.drawRect({ // equality output box
+name:"equal",
 strokeStyle: '#000',
 fillStyle: '#ccc',
 x: 250, y: 160,
@@ -118,8 +137,16 @@ width: 50,
 height: 80,
 cornerRadius: 5,
 layer: true,
+})
+.drawRect({ // Evaluating Box
+name: "evaluation",
+//strokeStyle: '#000', // if visualisation needed, for test purpose
+x: 250, y: 75,
+width: 60,
+height: 70,
+layer: true,
 });
-for (var i = 0; i < 7; i++) {
+for (var i = 0; i < 7; i++) { // sort dropzones
   $('canvas').drawRect({
     name: "sort"+i,
     type: "sort",
@@ -136,11 +163,15 @@ for (var i = 0; i < 7; i++) {
   });
 };
 setValue(value);
-// #============================================= BOTTLES =============================================# //
+
+// #============================================= BOTTLES INIT =============================================# //
+// Level 0 : Sorted
+// Level 1 : Shuffled
+// Level 3 : Random Weight
   bottleList= [];
-  if($level==1){
+  if($level<=1){
     b = [1,2,3,4,5,6,7];
-    console.log(shuffle(b));
+    if($level==1){shuffle(b)};
     bottleList.push(drawBottle("bottle1",b[0],20,40));  
     bottleList.push(drawBottle("bottle2",b[1],60,70));
     bottleList.push(drawBottle("bottle3",b[2],100,40));
@@ -157,6 +188,9 @@ setValue(value);
     bottleList.push(drawBottle("bottle6",randomWeight(),440,70));
     bottleList.push(drawBottle("bottle7",randomWeight(),480,40)); 
   }
+  // Logging answer
+  console.log("Bottle values :");
+  bottleList.forEach(function(bottle){console.log(bottle.name+" : "+bottle.weight)});
 // #============================================= Select level =============================================# //
 $('canvas').drawText({
   name: "level1",
@@ -188,7 +222,7 @@ $('canvas').drawText({
     init(2);
   }
 })
-.setLayer("level"+$level,{
+.setLayer("level"+$level,{ // mark the current level
   fontStyle:"bold"
 }).drawLayers();
 // #============================================= CHECK RESULT =============================================# //
@@ -198,15 +232,9 @@ $('canvas').drawImage({
   layer:true,
   click: function(layer){
     check();
-    $('canvas').animateLayer(layer, {
-    rotate: '+=360',
-    })
   },
   touchstart: function(layer) {
     check();
-    $('canvas').animateLayer(layer, {
-    rotate: '+=360',
-    })
   }
 });
 // #============================================= RELOAD =============================================# //
@@ -283,7 +311,7 @@ setTimeout(function() {
 }, 5000);
 }
 
-window.addEventListener( "keypress", test, false )
+window.addEventListener( "keypress", test, false ); // bind the script to every keypress
 
 // #============================================= FUNCTIONS =============================================# //
 function setValue(c) {
@@ -301,40 +329,43 @@ layer: true,
 maxWidth: 2
 })
 .drawLayers();
+$(window).resize();
 }
 function Mvalue(){
   if(value>minWeight){
     $('canvas').animateLayer($('canvas').getLayer('-box').name, {
       rotate: '-=180'
     });
-  setValue(--value);
+    setValue(--value);
   }
 }
 function Pvalue(){
   if(value<maxWeight){
+    countLayer = $('canvas').getLayer('count');
     $('canvas').animateLayer($('canvas').getLayer('+box').name, {
       rotate: '+=180'
     });
-  setValue(++value);
+    setValue(++value);
   }
 }
 
-function translate(target, xb, yb){
+function translate(target, xb, yb, callback){
   fixPosition(target.name,xb,yb);
   $('canvas').animateLayer(target, {
   x: xb, y: yb
-  }, 300);
+  }, 300, callback);
 }
 
 function on(object,target){
-x= getX(object);
-y= getY(object);
-xt= $('canvas').getLayer(target).x;
-yt= $('canvas').getLayer(target).y;
-wt= $('canvas').getLayer(target).width;
-ht= $('canvas').getLayer(target).height;
-return (xt-wt/2< x)&&(x <xt+wt/2)&&(yt-ht/2< y)&&(y <yt+ht/2);
+  x= getX(object);
+  y= getY(object);
+  xt= $('canvas').getLayer(target).x;
+  yt= $('canvas').getLayer(target).y;
+  wt= $('canvas').getLayer(target).width;
+  ht= $('canvas').getLayer(target).height;
+  return (xt-wt/2< x)&&(x <xt+wt/2)&&(yt-ht/2< y)&&(y <yt+ht/2);
 }
+
 function inside(x1,y1,x2,y2){
   var inList = [];
   for (var i = bottleList.length - 1; i >= 0; i--) {
@@ -347,13 +378,13 @@ function inside(x1,y1,x2,y2){
 }
 
 function getX(layer){
-return $('canvas').getLayer(layer).x;
+  return $('canvas').getLayer(layer).x;
 }
 function getY(layer){
-return $('canvas').getLayer(layer).y;
+  return $('canvas').getLayer(layer).y;
 }
 function getWeight(bottle){
-return $('canvas').getLayer(bottle).weight;
+  return $('canvas').getLayer(bottle).weight;
 }
 
 // === Automation function === //
@@ -364,6 +395,7 @@ function reset(bottle){
 }
 function select(bottle, slot){
   unsortBottle(bottle);
+  bringToFront(bottle);
   var s = $('canvas').getLayer(slot);
   var b = $('canvas').getLayer(bottle);
   translate(bottle,getX(s),getY(s));
@@ -373,29 +405,25 @@ function select(bottle, slot){
 }
 // === ================== === //
 function evaluate(bottle){
-  //$('canvas').moveLayer(bottle, 0).drawLayers();
-  translate(bottle,getX('drop'),getY('drop'));
+  translate(bottle,getX('evaluation'),getY('evaluation'));
   testBottle(bottle); 
 }
 function testBottle(layer){
 unsortBottle(layer);
-if(getWeight(layer)>value){
-translate(layer,344*ratio,160*ratio);
-//$('canvas').moveLayer(layer, 1);
-direction = 1;
-}else if(getWeight(layer)<value){
-translate(layer,156*ratio,160*ratio);
-//$('canvas').moveLayer(layer, 1);
-direction = -1;
-}else{
-  if(sortList[getWeight(layer)-1]==-1){
-    select(layer,"sort"+(getWeight(layer)-1));
-  } else {
-    translate(layer,250*ratio,70*ratio);
+$('canvas').moveLayer(layer, 1);
+translate(layer,250*ratio,160*ratio,function(){
+  if(getWeight(layer)>value){
+  translate(layer,344*ratio,160*ratio);
+  direction = 1;
+  }else if(getWeight(layer)<value){
+  translate(layer,156*ratio,160*ratio);
+  direction = -1;
+  }else{
+    $('canvas').moveLayer(layer, $('canvas').getLayer('equal').index+1).drawLayers(); // move layer at the end of the stacked bottle, just above the equal output box
+    direction = 0;
   }
-direction = 0;
-}
-roll(direction);
+  roll(direction);
+});
 }
 
 function unsortBottle(layer){
@@ -422,7 +450,7 @@ function drawBottle($name,$weight,$x,$y){
   },
   dragstop: function(layer) {
     fixPosition(layer,layer.x,layer.y)
-    if(on($name,"drop")){     // EVALUATE
+    if(on($name,"evaluation")){     // EVALUATE
       testBottle(layer);
     } else if(s=onSort(layer)){ // SORTED
       select(layer,s);
@@ -431,7 +459,14 @@ function drawBottle($name,$weight,$x,$y){
     }
   },
   dragcancel: function(layer) {
-      translate(layer,$x,$y); 
+    translate(layer,$x,$y); 
+  },
+  drag: function(layer) {
+    if(on($name,"evaluation")){     // EVALUATE
+      $(this).animateLayer("main box", {shadowColor: '#ff0', shadowBlur: 20},0,function(layer) {layer.shadowColor= '#333'});
+    }else if(s=onSort(layer)){
+      $(this).animateLayer(s, {shadowColor: '#ff0', shadowBlur: 20},0,function(layer) {layer.shadowColor= '#333'});
+    }
   }
 });
 return $('canvas').getLayer($name);
