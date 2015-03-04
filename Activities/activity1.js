@@ -389,6 +389,7 @@ function reset(bottle){
 }
 function select(bottle, slot){
   unsortBottle(bottle);
+  bringToFront(bottle);
   var s = $('canvas').getLayer(slot);
   var b = $('canvas').getLayer(bottle);
   translate(bottle,getX(s),getY(s));
