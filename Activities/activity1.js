@@ -32,7 +32,7 @@ $('canvas').drawLine({
   name: "enterbox1",
   strokeStyle: '#000',
   strokeWidth: 4,
-  x1: 225, y1: 110,
+  x1: 225, y1: 112,
   x2: 210, y2: 90,
   layer:true,
   coord:true
@@ -41,7 +41,7 @@ $('canvas').drawLine({
   name:"enterbox2",
   strokeStyle: '#222',
   strokeWidth: 4,
-  x1: 275, y1: 110,
+  x1: 275, y1: 112,
   x2: 290, y2: 90,
   layer:true,
   coord:true
@@ -129,6 +129,7 @@ text: '+',
 layer: true
 })
 .drawRect({ // equality output box
+name:"equal",
 strokeStyle: '#000',
 fillStyle: '#ccc',
 x: 250, y: 160,
@@ -162,6 +163,7 @@ for (var i = 0; i < 7; i++) {
   });
 };
 setValue(value);
+
 // #============================================= BOTTLES =============================================# //
   bottleList= [];
   if($level==1){
@@ -227,15 +229,9 @@ $('canvas').drawImage({
   layer:true,
   click: function(layer){
     check();
-    $('canvas').animateLayer(layer, {
-    rotate: '+=360',
-    })
   },
   touchstart: function(layer) {
     check();
-    $('canvas').animateLayer(layer, {
-    rotate: '+=360',
-    })
   }
 });
 // #============================================= RELOAD =============================================# //
@@ -402,7 +398,6 @@ function select(bottle, slot){
 }
 // === ================== === //
 function evaluate(bottle){
-  //$('canvas').moveLayer(bottle, 0).drawLayers();
   translate(bottle,getX('evaluation'),getY('evaluation'));
   testBottle(bottle); 
 }
@@ -417,7 +412,7 @@ translate(layer,250*ratio,160*ratio,function(){
   translate(layer,156*ratio,160*ratio);
   direction = -1;
   }else{
-    $('canvas').moveLayer(layer, 50);
+    $('canvas').moveLayer(layer, $('canvas').getLayer('equal').index+1).drawLayers(); // move layer at the end of the stacked bottle, just above the equal output box
     direction = 0;
   }
   roll(direction);
