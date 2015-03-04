@@ -11,7 +11,7 @@ sortList = [-1,-1,-1,-1,-1,-1,-1];
 value = initValue;
 
 $('canvas').drawLine({
-  name:"l1",
+  name:"stakeLeft",
   strokeStyle: '#222',
   strokeWidth: 8,
   x1: 70, y1: 200,
@@ -20,7 +20,7 @@ $('canvas').drawLine({
   coord:true
 })
 .drawLine({
-  name:"l2",
+  name:"stakeRight",
   strokeStyle: '#222',
   strokeWidth: 8,
   x1: 430, y1: 200,
@@ -29,7 +29,7 @@ $('canvas').drawLine({
   coord:true
 })
 .drawLine({
-  name: "enterbox1",
+  name: "funnelLeft",
   strokeStyle: '#000',
   strokeWidth: 4,
   x1: 225, y1: 112,
@@ -38,7 +38,7 @@ $('canvas').drawLine({
   coord:true
 })
 .drawLine({
-  name:"enterbox2",
+  name:"funnelRight",
   strokeStyle: '#222',
   strokeWidth: 4,
   x1: 275, y1: 112,
@@ -146,7 +146,7 @@ width: 60,
 height: 70,
 layer: true,
 });
-for (var i = 0; i < 7; i++) {
+for (var i = 0; i < 7; i++) { // sort dropzones
   $('canvas').drawRect({
     name: "sort"+i,
     type: "sort",
@@ -164,11 +164,14 @@ for (var i = 0; i < 7; i++) {
 };
 setValue(value);
 
-// #============================================= BOTTLES =============================================# //
+// #============================================= BOTTLES INIT =============================================# //
+// Level 0 : Sorted
+// Level 1 : Shuffled
+// Level 3 : Random Weight
   bottleList= [];
-  if($level==1){
+  if($level<=1){
     b = [1,2,3,4,5,6,7];
-    shuffle(b);
+    if($level==1){shuffle(b)};
     bottleList.push(drawBottle("bottle1",b[0],20,40));  
     bottleList.push(drawBottle("bottle2",b[1],60,70));
     bottleList.push(drawBottle("bottle3",b[2],100,40));
@@ -219,7 +222,7 @@ $('canvas').drawText({
     init(2);
   }
 })
-.setLayer("level"+$level,{
+.setLayer("level"+$level,{ // mark the current level
   fontStyle:"bold"
 }).drawLayers();
 // #============================================= CHECK RESULT =============================================# //
@@ -308,7 +311,7 @@ setTimeout(function() {
 }, 5000);
 }
 
-window.addEventListener( "keypress", test, false )
+window.addEventListener( "keypress", test, false ); // bind the script to every keypress
 
 // #============================================= FUNCTIONS =============================================# //
 function setValue(c) {
@@ -354,14 +357,15 @@ function translate(target, xb, yb, callback){
 }
 
 function on(object,target){
-x= getX(object);
-y= getY(object);
-xt= $('canvas').getLayer(target).x;
-yt= $('canvas').getLayer(target).y;
-wt= $('canvas').getLayer(target).width;
-ht= $('canvas').getLayer(target).height;
-return (xt-wt/2< x)&&(x <xt+wt/2)&&(yt-ht/2< y)&&(y <yt+ht/2);
+  x= getX(object);
+  y= getY(object);
+  xt= $('canvas').getLayer(target).x;
+  yt= $('canvas').getLayer(target).y;
+  wt= $('canvas').getLayer(target).width;
+  ht= $('canvas').getLayer(target).height;
+  return (xt-wt/2< x)&&(x <xt+wt/2)&&(yt-ht/2< y)&&(y <yt+ht/2);
 }
+
 function inside(x1,y1,x2,y2){
   var inList = [];
   for (var i = bottleList.length - 1; i >= 0; i--) {
@@ -374,13 +378,13 @@ function inside(x1,y1,x2,y2){
 }
 
 function getX(layer){
-return $('canvas').getLayer(layer).x;
+  return $('canvas').getLayer(layer).x;
 }
 function getY(layer){
-return $('canvas').getLayer(layer).y;
+  return $('canvas').getLayer(layer).y;
 }
 function getWeight(bottle){
-return $('canvas').getLayer(bottle).weight;
+  return $('canvas').getLayer(bottle).weight;
 }
 
 // === Automation function === //
@@ -458,7 +462,6 @@ function drawBottle($name,$weight,$x,$y){
     translate(layer,$x,$y); 
   },
   drag: function(layer) {
-    // console.log(layer);
     if(on($name,"evaluation")){     // EVALUATE
       $(this).animateLayer("main box", {shadowColor: '#ff0', shadowBlur: 20},0,function(layer) {layer.shadowColor= '#333'});
     }else if(s=onSort(layer)){
