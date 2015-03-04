@@ -326,21 +326,23 @@ layer: true,
 maxWidth: 2
 })
 .drawLayers();
+$(window).resize();
 }
 function Mvalue(){
   if(value>minWeight){
     $('canvas').animateLayer($('canvas').getLayer('-box').name, {
       rotate: '-=180'
     });
-  setValue(--value);
+    setValue(--value);
   }
 }
 function Pvalue(){
   if(value<maxWeight){
+    countLayer = $('canvas').getLayer('count');
     $('canvas').animateLayer($('canvas').getLayer('+box').name, {
       rotate: '+=180'
     });
-  setValue(++value);
+    setValue(++value);
   }
 }
 
