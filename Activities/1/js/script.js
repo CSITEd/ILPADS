@@ -523,11 +523,11 @@ function roll(direction){
   }
   rList.sort(function(a, b){return (getX(a)-getX(b))*direction});
 
-  for (var i = 0; i < rList.length; i++){
-    if(direction >0){
-      translate($('canvas').getLayer(rList[i]),344*ratio+(28*(i+1)*ratio),160*ratio);
-    } else if(direction<0){
-      translate($('canvas').getLayer(rList[i]),156*ratio-(28*(i+1)*ratio),160*ratio);
+  for (var i = 0; i < rList.length; i++){ // translate if direction of translation is right and is ont the focused side
+    if(direction >0 && $('canvas').getLayer(rList[i]).x<(newPos = 344*ratio+(28*(i+1)*ratio))){
+      translate($('canvas').getLayer(rList[i]),newPos,160*ratio);
+    } else if(direction<0 && $('canvas').getLayer(rList[i]).x>(newPos = 156*ratio-(28*(i+1)*ratio))){
+      translate($('canvas').getLayer(rList[i]),newPos,160*ratio);
     }
   };
   
