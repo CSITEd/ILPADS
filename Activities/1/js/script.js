@@ -46,15 +46,15 @@ $('canvas').drawLine({
   layer:true,
   coord:true
 });
-for (var i = 0; i < 15; i++) { // Conveyor Belt part 1
+for (var i = 0; i < 17; i++) { // Conveyor Belt part 1
   $('canvas').drawEllipse({
     fillStyle: '#445',
-    x: (30+i*10), y: 200,
+    x: (10+i*10), y: 200,
     width: 10, height: 10,
     layer:true
   });
 };
-for (var i = 0; i < 15; i++) { // Conveyor Belt part 2
+for (var i = 0; i < 17; i++) { // Conveyor Belt part 2
   $('canvas').drawEllipse({
     fillStyle: '#445',
     x: (330+i*10), y: 200,
