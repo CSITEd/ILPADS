@@ -172,6 +172,12 @@ setValue(value);
   if($level<=1){
     b = [1,2,3,4,5,6,7];
     if($level==1){shuffle(b)};
+  } else {
+    b = [1,randomWeight(),randomWeight(),randomWeight(),randomWeight(),randomWeight(),7];
+    // Two bottles have bound weight to prevent a conveyor to carry more than 6 bottles 
+    shuffle(b);
+  }
+
     bottleList.push(drawBottle("bottle1",b[0],20,40));  
     bottleList.push(drawBottle("bottle2",b[1],60,70));
     bottleList.push(drawBottle("bottle3",b[2],100,40));
@@ -179,15 +185,6 @@ setValue(value);
     bottleList.push(drawBottle("bottle5",b[4],400,40));
     bottleList.push(drawBottle("bottle6",b[5],440,70));
     bottleList.push(drawBottle("bottle7",b[6],480,40)); 
-  } else {
-    bottleList.push(drawBottle("bottle1",randomWeight(),20,40));  
-    bottleList.push(drawBottle("bottle2",randomWeight(),60,70));
-    bottleList.push(drawBottle("bottle3",randomWeight(),100,40));
-    bottleList.push(drawBottle("bottle4",randomWeight(),360,70));  
-    bottleList.push(drawBottle("bottle5",randomWeight(),400,40));
-    bottleList.push(drawBottle("bottle6",randomWeight(),440,70));
-    bottleList.push(drawBottle("bottle7",randomWeight(),480,40)); 
-  }
   // Logging answer
   console.log("Bottle values :");
   bottleList.forEach(function(bottle){console.log(bottle.name+" : "+bottle.weight)});
