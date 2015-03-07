@@ -46,15 +46,15 @@ $('canvas').drawLine({
   layer:true,
   coord:true
 });
-for (var i = 0; i < 15; i++) { // Conveyor Belt part 1
+for (var i = 0; i < 17; i++) { // Conveyor Belt part 1
   $('canvas').drawEllipse({
     fillStyle: '#445',
-    x: (30+i*10), y: 200,
+    x: (10+i*10), y: 200,
     width: 10, height: 10,
     layer:true
   });
 };
-for (var i = 0; i < 15; i++) { // Conveyor Belt part 2
+for (var i = 0; i < 17; i++) { // Conveyor Belt part 2
   $('canvas').drawEllipse({
     fillStyle: '#445',
     x: (330+i*10), y: 200,
@@ -172,6 +172,12 @@ setValue(value);
   if($level<=1){
     b = [1,2,3,4,5,6,7];
     if($level==1){shuffle(b)};
+  } else {
+    b = [1,randomWeight(),randomWeight(),randomWeight(),randomWeight(),randomWeight(),7];
+    // Two bottles have bound weight to prevent a conveyor to carry more than 6 bottles 
+    shuffle(b);
+  }
+
     bottleList.push(drawBottle("bottle1",b[0],20,40));  
     bottleList.push(drawBottle("bottle2",b[1],60,70));
     bottleList.push(drawBottle("bottle3",b[2],100,40));
@@ -179,15 +185,6 @@ setValue(value);
     bottleList.push(drawBottle("bottle5",b[4],400,40));
     bottleList.push(drawBottle("bottle6",b[5],440,70));
     bottleList.push(drawBottle("bottle7",b[6],480,40)); 
-  } else {
-    bottleList.push(drawBottle("bottle1",randomWeight(),20,40));  
-    bottleList.push(drawBottle("bottle2",randomWeight(),60,70));
-    bottleList.push(drawBottle("bottle3",randomWeight(),100,40));
-    bottleList.push(drawBottle("bottle4",randomWeight(),360,70));  
-    bottleList.push(drawBottle("bottle5",randomWeight(),400,40));
-    bottleList.push(drawBottle("bottle6",randomWeight(),440,70));
-    bottleList.push(drawBottle("bottle7",randomWeight(),480,40)); 
-  }
   // Logging answer
   console.log("Bottle values :");
   bottleList.forEach(function(bottle){console.log(bottle.name+" : "+bottle.weight)});
@@ -523,11 +520,11 @@ function roll(direction){
   }
   rList.sort(function(a, b){return (getX(a)-getX(b))*direction});
 
-  for (var i = 0; i < rList.length; i++){
-    if(direction >0){
-      translate($('canvas').getLayer(rList[i]),344*ratio+(28*(i+1)*ratio),160*ratio);
-    } else if(direction<0){
-      translate($('canvas').getLayer(rList[i]),156*ratio-(28*(i+1)*ratio),160*ratio);
+  for (var i = 0; i < rList.length; i++){ // translate if direction of translation is right and is ont the focused side
+    if(direction >0 && $('canvas').getLayer(rList[i]).x<(newPos = 344*ratio+(28*(i+1)*ratio))){
+      translate($('canvas').getLayer(rList[i]),newPos,160*ratio);
+    } else if(direction<0 && $('canvas').getLayer(rList[i]).x>(newPos = 156*ratio-(28*(i+1)*ratio))){
+      translate($('canvas').getLayer(rList[i]),newPos,160*ratio);
     }
   };
   
