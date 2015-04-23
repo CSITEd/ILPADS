@@ -1,0 +1,27 @@
+<head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/dom.jsPlumb-1.7.2-min.js"></script>
+  <script type="text/javascript" src="js/flow.js"></script>
+  <script type="text/javascript" src="js/tooltip.js"></script>
+  <link rel="stylesheet" href="css/flowchart.css" type="text/css"> 
+  <title>Flowchart</title>
+ </head>
+ <body id="flow" style="zoom: 1; cursor: auto;">
+  <div id="tooltip">
+    <div class="Twindow drag begin" id="Tbegin" shape=Circle>Début</div>
+    <div class="Twindow drag forward" id="Tforward" shape=Rectangle>Avancer</div>
+    <div class="Twindow drag turn" id="Tturn" shape=Rectangle>Tourner</div>
+    <div class="Twindow drag if" id="Tif" shape=Diamond>Obstacle</div>
+    <div class="Twindow drag end" id="Tend" shape=Circle>Fin</div>
+  </div>
+    <div id="flowchart" class="droppable">
+      <div class="window" id="forward" shape=Rectangle>Avancer</div>
+      <div class="window" id="turn" shape=Rectangle>Tourner</div>
+      <div class="window" id="if" shape=Diamond>Obstacle</div>
+      <!-- <div class="window" id="repeat" shape=Diamond>Répéter 4 fois</div> -->
+      <div class="window" id="begin" shape=Circle>Début</div>
+      <div class="window" id="end" shape=Circle>Fin</div>
+    </div>
+  </body>
+</html>

@@ -519,7 +519,7 @@ function roll(direction){
     rList = inside(30*ratio,140*ratio,170*ratio,195*ratio);
   }
   rList.sort(function(a, b){return (getX(a)-getX(b))*direction});
-
+  console.log(rList.length);
   for (var i = 0; i < rList.length; i++){ // translate if direction of translation is right and is ont the focused side
     if(direction >0 && $('canvas').getLayer(rList[i]).x<(newPos = 344*ratio+(28*(i+1)*ratio))){
       translate($('canvas').getLayer(rList[i]),newPos,160*ratio);

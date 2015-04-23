@@ -1,0 +1,180 @@
+
+.window {   
+  padding:0px;
+  position:absolute;
+  z-index:4;
+  opacity:0.8;
+  filter:alpha(opacity=95);
+  cursor:move;
+  font-size:11px;
+  text-align: center;
+  /*border : 1px solid black;*/
+}
+.window:hover {
+  color:white;
+}
+
+.Twindow {   
+  padding:0px;
+  position:absolute;
+  z-index:4;
+  opacity:0.8;
+  filter:alpha(opacity=95);
+  cursor:move;
+  font-size:11px;
+  text-align: center;
+  /*border : 1px solid black;*/
+}
+.Twindow:hover {
+  color:white;
+}
+
+.aLabel {
+  -webkit-transition:background-color 0.25s ease-in;
+  -moz-transition:background-color 0.25s ease-in;
+  transition:background-color 0.25s ease-in;
+}
+
+.aLabel._jsPlumb_hover/*, ._jsPlumb_source_hover, ._jsPlumb_target_hover*/ {
+  background-color:#1e8151;
+  color:white;
+}
+
+.aLabel {
+  background-color:white;
+  opacity:0.8;
+  padding:0.3em;        
+  border-radius:0.5em;
+  border:1px solid #346789;
+  cursor:pointer;
+}
+
+body {
+  margin:0px;
+}
+
+#tooltip {
+  background-image: url('../img/grid.png');
+  background-repeat:  repeat;
+  background-size: 50px;
+  background-position: -2px -2px;
+  height: 600px;
+  width : 150px;
+  float: left;
+}
+#flowchart {
+  /*z-index:3;*/
+  background-image: url('../img/line.png'), url('../img/grid.png');
+  background-repeat: repeat-y, repeat;
+  background-size: 50px;
+  background-position: -2px 0px, -2px -2px; 
+  height: 600px;
+  width: 600px;
+  float: left;
+}
+
+#forward {
+  left:400px;
+  top:400px;
+}
+#turn {
+  left:600px;
+  top:400px;
+}
+#if {
+  left:500px;
+  top:300px;
+}
+#repeat {
+  left:250px;
+  top:200px;
+}
+#begin {
+  left:250px;
+  top:50px;
+}
+#end {
+  left:250px;
+  top:350px;
+}
+
+#Tforward {
+  left:25px;
+  top:175px;
+}
+
+#Tturn {
+  left:25px;
+  top:250px;
+}
+#Tif {
+  left:25px;
+  top:325px;
+}
+/*#repeat {
+  left:120px;
+  top:200px;
+}*/
+#Tbegin {
+  left:25px;
+  top:25px;
+}
+#Tend {
+  left:25px;
+  top:450px;
+}
+
+.dragHover { border:2px solid orange; }
+
+/** SHAPES **/
+
+[shape=Rectangle] {
+    width:100px;
+    height:40px;
+    left:380px;
+    top:505px;
+    line-height: 50px;
+    background-image:url(../img/rectangle.png);
+}
+
+[shape=Ellipse] {
+    width:210px;
+    height:70px;
+    left:250px;
+    top:300px;
+    line-height: 70px;
+    background-image:url(../img/ellipse.png);
+}
+
+[shape=Circle] {
+    width:100px;
+    height:100px;
+    left:100px;
+    top:60px;
+    line-height: 100px;
+    background-image:url(../img/circle.png);
+}
+
+[shape=Triangle] {
+    width:150px;
+    height:150px;
+    line-height: 150px;
+    background-image:url(../img/triangle.png);
+}
+
+[shape=Diamond] {
+    width:100px;
+    height:100px;
+    left:550px;
+    top:150px;
+    line-height: 100px;
+    background-image:url(../img/diamond.png);
+}
+
+
+path { cursor:pointer; }
+
+.endpointLabel{
+  color: #777;
+  font-size:11px;
+}
